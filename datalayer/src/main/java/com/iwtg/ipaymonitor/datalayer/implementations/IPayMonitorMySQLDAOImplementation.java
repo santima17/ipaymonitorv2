@@ -135,10 +135,11 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				dataResult.setMail((String) row[9]);
 				dataResult.setDocumento((String) row[10]);
 				dataResult.setMonto((String) row[11]);
-				dataResult.setCodCard((String) row[12]);
-				dataResult.setTarjeta((String) row[15]);
-				dataResult.setAutorizacion((String) row[16]);
-				dataResult.setCodcomercio((String) row[17]);
+				dataResult.setAutorizacion((String) row[15]);
+				dataResult.setTarjeta((String) row[17]);
+				dataResult.setCodcomercio((String) row[18]);
+				dataResult.setAcquirerID((String) row[19]);
+				
 				resultDataList.add(dataResult);
 			}
 		}
@@ -164,13 +165,14 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 		dataResult.setNombre(transaction.getName());
 		dataResult.setPais(transaction.getCountry());
 		dataResult.setTarjeta(cierre.getCreditCardNumber());
+		dataResult.setAcquirerID(cierre.getAcquirerId());
 		return dataResult;
 	}
 
 	private String makeSearchQuery(DataSearchTransactionParameter searchParameter) {
 		SimpleDateFormat formatterFrom = new SimpleDateFormat("yyyy-MM-dd 00:00:00");
 		SimpleDateFormat formatterTo = new SimpleDateFormat("yyyy-MM-dd 23:59:59");
-		String query = "SELECT t.*, b.* FROM transaction t JOIN batch_closure b ON t.reservationNumber = b.reservationNumber ";
+		String query = "SELECT t.*, b.creditCardNumber, b.commerceID, b.acquirerID FROM transaction t JOIN batch_closure b ON t.reservationNumber = b.reservationNumber ";
 
 		String where = "where ";
 		int cont = 0;
@@ -186,7 +188,7 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				}
 				cont = 1;
 			}
-			if (!searchParameter.getStatus().equals("Todos")) {
+			if (!searchParameter.getStatus().equals("all")) {
 				if (cont == 1) {
 					if (searchParameter.getStatus().equals("Autorizado")) {
 						where = where + " and transactionStatusCode like '%000%'";
@@ -216,16 +218,16 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				cont = 1;
 			}
 
-			if (!searchParameter.getAdquirer().equals("Todos")) {
+			if (!searchParameter.getAcquirerID().equals("all")) {
 				if (cont == 1) {
-					where = where + " and acquirerID = '" + searchParameter.getAdquirer() + "'";
+					where = where + " and acquirerID = '" + searchParameter.getAcquirerID() + "'";
 				} else {
-					where = where + " acquirerID = '" + searchParameter.getAdquirer() + "'";
+					where = where + " acquirerID = '" + searchParameter.getAcquirerID() + "'";
 				}
 				cont = 1;
 			}
 
-			if (!searchParameter.getCountry().equals("Todos")) {
+			if (!searchParameter.getCountry().equals("all")) {
 				if (cont == 1) {
 					where = where + " and country = '" + searchParameter.getCountry() + "'";
 				} else {
@@ -233,7 +235,7 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				}
 				cont = 1;
 			}
-			if (!searchParameter.getChannel().equals("Todos")) {
+			if (!searchParameter.getChannel().equals("all")) {
 				if (cont == 1) {
 					where = where + " and channel  = '" + searchParameter.getChannel() + "'";
 				} else {
@@ -241,7 +243,7 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				}
 				cont = 1;
 			}
-			if (!searchParameter.getCurrency().equals("Todas")) {
+			if (!searchParameter.getCurrency().equals("all")) {
 				if (cont == 1) {
 					where = where + " and currency = '" + searchParameter.getCurrency() + "'";
 				} else {
@@ -249,7 +251,7 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 				}
 				cont = 1;
 			}
-			if (!searchParameter.getCardBrand().equals("Todos")) {
+			if (!searchParameter.getCardBrand().equals("all")) {
 				if (cont == 1) {
 					where = where + " and creditCardBrand = '" + searchParameter.getCardBrand() + "'";
 				} else {
@@ -259,11 +261,11 @@ public class IPayMonitorMySQLDAOImplementation implements IPayMonitorMySQLDAO {
 			}
 
 			if (cont == 1) {
-				where = where + " and (t.fecha >= '" + formatterFrom.format(searchParameter.getDateFrom())
-						+ "' and t.fecha <= '" + formatterTo.format(searchParameter.getDateTo()) + "')";
+				where = where + " and (t.date >= '" + formatterFrom.format(searchParameter.getDateFrom())
+						+ "' and t.date <= '" + formatterTo.format(searchParameter.getDateTo()) + "')";
 			} else {
-				where = where + "(t.fecha >= '" + formatterFrom.format(searchParameter.getDateFrom())
-						+ "' and t.fecha <= '" + formatterTo.format(searchParameter.getDateTo()) + "')";
+				where = where + "(t.date >= '" + formatterFrom.format(searchParameter.getDateFrom())
+						+ "' and t.date <= '" + formatterTo.format(searchParameter.getDateTo()) + "')";
 			}
 
 			where = where + " and transactionStatusCode NOT like '%PPP%'  and transactionStatusCode <> '' ";

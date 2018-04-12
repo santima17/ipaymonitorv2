@@ -21,7 +21,9 @@ public class DataTransactionSearchResult {
 	private String tarjeta;
 	private String autorizacion;
 	private String codcomercio;
-
+	
+	private String acquirerID;
+	
 	public String getCodigoRes() {
 		return codigoRes;
 	}
@@ -149,5 +151,14 @@ public class DataTransactionSearchResult {
 	public void setCodcomercio(String codcomercio) {
 		this.codcomercio = codcomercio;
 	}
+
+	public String getAcquirerID() {
+		return acquirerID;
+	}
+
+	public void setAcquirerID(String acquirerID) {
+		this.acquirerID = acquirerID;
+	}
+	
 
 }

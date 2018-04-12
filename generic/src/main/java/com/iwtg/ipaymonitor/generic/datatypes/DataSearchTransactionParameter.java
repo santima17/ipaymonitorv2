@@ -15,7 +15,7 @@ public class DataSearchTransactionParameter {
     private Date dateFrom;
     private Date dateTo;
     private String creditCardNumber;
-    private String adquirer;
+    private String acquirerID;
     
 	public String getTransactionID() {
 		return transactionID;
@@ -83,12 +83,13 @@ public class DataSearchTransactionParameter {
 	public void setCreditCardNumber(String creditCardNumber) {
 		this.creditCardNumber = creditCardNumber;
 	}
-	public String getAdquirer() {
-		return adquirer;
+	public String getAcquirerID() {
+		return acquirerID;
 	}
-	public void setAdquirer(String adquirer) {
-		this.adquirer = adquirer;
+	public void setAcquirerID(String acquirerID) {
+		this.acquirerID = acquirerID;
 	}
+
     
     
 

@@ -12,6 +12,7 @@ public class DataSearchTransaction {
     private String bank;
     private String currency;
     private String status;
+    private String acquirerID;
     private Date dateFrom;
     private Date dateTo;
     
@@ -74,6 +75,12 @@ public class DataSearchTransaction {
 	}
 	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
+	}
+	public String getAcquirerID() {
+		return acquirerID;
+	}
+	public void setAcquirerID(String acquirerID) {
+		this.acquirerID = acquirerID;
 	}
     
     

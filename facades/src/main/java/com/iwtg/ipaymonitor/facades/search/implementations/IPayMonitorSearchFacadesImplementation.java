@@ -41,6 +41,7 @@ public class IPayMonitorSearchFacadesImplementation implements IPayMonitorSearch
 		param.setDocument(dataSearchTransaction.getDocument());
 		param.setStatus(dataSearchTransaction.getStatus());
 		param.setTransactionID(dataSearchTransaction.getTransactionID());
+		param.setAcquirerID(dataSearchTransaction.getAcquirerID());
 		return param;
 	}
 
